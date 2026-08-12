@@ -1,6 +1,6 @@
 <template>
 <div class="wrapper">
-	<back-button />
+	<back-button @click="saveAndGoBack" />
   <div class="note-action">
     <input
       type="text"
@@ -53,7 +53,7 @@
       <input
         type="text"
         class="note-action__add-input"
-        placeholder="Новый пункт"
+        placeholder="Новий пункт"
         ref="todoInput"
         maxlength="50"
         v-model="addTodo"
@@ -69,7 +69,7 @@
         <icon-base>
           <icon-save />
         </icon-base>
-        {{ isEditable ? 'Сохранить' : 'Добавить заметку' }}
+        {{ isEditable ? 'Зберегти' : 'Додати нотатку' }}
       </button>
       <div class="note-action__history-buttons">
         <button v-if="history.length > 1" @click="undoChanges()">
@@ -168,8 +168,8 @@ export default {
   methods: {
     ...mapActions(["ADD_ITEM", "CHANGE_ITEM", "DELETE_ITEM"]),
     setNoteData() {
-      // Если есть ID - редактируем
-      // Иначе - сетим значения
+      // Якщо є ID — редагуємо
+      // Інакше — встановлюємо значення
       if (this.$route.params.notesId) {
         this.isEditable = true;
         let data = this.NOTES.filter(elem => {
@@ -186,7 +186,7 @@ export default {
     // TODO
     // -------------------
     addNewTodo() {
-      // Добавление тудушки
+      // Додавання пункту
       if (this.addTodo.length > 0) {
         this.saveStateToHistory();
         this.note.todo.push([false, this.addTodo]);
@@ -194,20 +194,20 @@ export default {
         this.warning = "";
         this.$refs.todoInput.focus();
       } else {
-        this.warning = "Название пункта не должно быть пустое";
+        this.warning = "Назва пункту не може бути порожньою";
       }
     },
     deleteTodo(index) {
-      // Удаление тудушки
+      // Видалення пункту
       this.saveStateToHistory();
       this.note.todo.splice(index, 1);
     },
     startEditTitle() {
-      // Редактирования тайтла
+      // Редагування заголовка
       this.saveStateToHistory();
     },
     editTitle() {
-      // Проверка на введенное значение при редактировании тайтла
+      // Перевірка введеного значення під час редагування заголовка
       let oldValueTitle = JSON.stringify(
         this.history[this.history.length - 2].title
       );
@@ -215,11 +215,11 @@ export default {
       if (oldValueTitle === currentValueTodo) this.history.pop();
     },
     startEditTodo() {
-      // Редактирование тудушки
+      // Редагування пункту
       this.saveStateToHistory();
     },
     editTodo(index) {
-      // Проверка на введенное значение при редактировании тудушки
+      // Перевірка введеного значення під час редагування пункту
       let oldValueTodo = JSON.stringify(
         this.history[this.history.length - 2].todo[index] &&
           this.history[this.history.length - 2].todo[index][1]
@@ -231,25 +231,40 @@ export default {
     // NOTE ACTION
     // -------------------
     saveStateToHistory() {
-      // Сохраняем историю изменений в history: []
+      // Зберігаємо історію змін у history: []
       let conditionСopy = JSON.parse(JSON.stringify(this.note));
       this.history.push(conditionСopy);
       this.historyArchive = [];
     },
     saveChangesNote() {
-      // Сохранить изменения в заметке
+      // Зберегти зміни в нотатці
       if (this.note.title.length > 0) {
         this.CHANGE_ITEM(this.note);
         this.$router.push({ name: "NoteList" });
       } else {
-        this.warning = "Название заметки не должно быть пустое";
+        this.warning = "Назва нотатки не може бути порожньою";
       }
+    },
+    saveAndGoBack() {
+      if (!this.note.title.trim()) {
+        this.warning = "Назва нотатки не може бути порожньою";
+        return;
+      }
+
+      if (this.isEditable) {
+        this.CHANGE_ITEM(this.note);
+      } else {
+        this.ADD_ITEM(this.note);
+      }
+
+      this.warning = "";
+      this.$router.push({ name: "NoteList" });
     },
     // -------------------
     // UNDO / REDO
     // -------------------
     keyPress(e) {
-      // Слушаем нажатия
+      // Відстежуємо натискання клавіш
       if (e.keyCode == 90 && e.ctrlKey) {
         e.preventDefault();
         this.undoChanges();
@@ -268,7 +283,7 @@ export default {
       }
     },
     undoChanges() {
-      // Отменить действие
+      // Скасувати дію
       if (this.historyArchive.length === 0) {
         this.historyArchive.push(this.note);
       }
@@ -282,7 +297,7 @@ export default {
       }
     },
     redoChanges() {
-      // Повторить действие
+      // Повторити дію
       if (this.historyArchive.length > 1) {
         let previousHistoryValue = JSON.parse(
           JSON.stringify(this.historyArchive[this.historyArchive.length - 2])
@@ -296,7 +311,7 @@ export default {
       }
     },
     discardEditing() {
-      // Откатить изменееия
+      // Відкинути зміни
       let initialValue = JSON.parse(JSON.stringify(this.history[0]));
       this.note = initialValue;
       this.history = [initialValue];
@@ -322,7 +337,7 @@ export default {
         this.warning = "";
         this.$router.push({ name: "NoteList" });
       } else {
-        this.warning = "Название заметки не должно быть пустое";
+        this.warning = "Назва нотатки не може бути порожньою";
       }
     },
     // -------------------

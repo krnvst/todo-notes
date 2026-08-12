@@ -19,7 +19,7 @@
       <icon-base>
         <icon-delete-bin />
       </icon-base>
-      <span>Удалить</span>
+      <span>Видалити</span>
     </button>
     <modal-popup
       v-if="isShowModal"
@@ -175,12 +175,12 @@ export default {
   }
 
   @include md-and-up {
-    width: 21.5%;
+    width: 26%;
   }
 
   @include lg-and-up {
-		min-width: 270px;
-    width: 17.5%;
+		min-width: 300px;
+    width: 22%;
   }
 }
 </style>

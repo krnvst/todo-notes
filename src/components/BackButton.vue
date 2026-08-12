@@ -1,10 +1,10 @@
 <template>
-	<router-link class="back-button" :to="{ name: 'NoteList' }">
+	<button type="button" class="back-button" @click="$emit('click')">
 		<icon-base class="back-button__icon">
 			<icon-arrow/>
 		</icon-base>
 		Назад
-	</router-link>
+	</button>
 </template>
 
 <script>
@@ -25,14 +25,17 @@ export default {
 @import "~@/styles/variables.scss";
 
 .back-button {
-	font-size: 18px;
+	display: flex;
+	align-items: center;
+	font-size: 12px;
 	text-decoration: none;
 	color: $text-color;
 	padding: 10px;
 
 	&__icon {
-		width: 14px;
-    height: 25px;
+		width: 16px;
+    height: 16px;
+		margin-bottom: 0;
 		color: black;
 	}
 }

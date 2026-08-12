@@ -13,7 +13,7 @@
             :class="['modal-popup__button--' + typeModal]"
             @click="confirm()"
           >{{ type[typeModal].buton }}</button>
-          <button class="modal-popup__button" @click="hideWindow">Закрыть</button>
+          <button class="modal-popup__button" @click="hideWindow">Закрити</button>
         </div>
       </div>
     </div>
@@ -42,12 +42,12 @@ export default {
   data: () => ({
     type: {
       delete: {
-        title: "Удалить заметку",
-        buton: "Удалить"
+        title: "Видалити нотатку",
+        buton: "Видалити"
       },
       editing: {
-        title: "Отменить редактирование",
-        buton: "Отменить"
+        title: "Скасувати редагування",
+        buton: "Скасувати"
       }
     }
   }),
